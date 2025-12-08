@@ -1,0 +1,38 @@
+# Development files
+src/
+tests/
+*.test.ts
+*.spec.ts
+coverage/
+
+# Configuration files
+.eslintrc.js
+.prettierrc
+jest.config.js
+tsconfig.json
+
+# Git files
+.git/
+.gitignore
+
+# Editor directories
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Build artifacts
+*.tsbuildinfo
+
+# Other files
+node_modules/
+examples/
+docs/
+.github/

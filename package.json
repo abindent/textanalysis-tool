@@ -1,0 +1,54 @@
+{
+  "name": "textanalysis-tool",
+  "version": "1.1.2",
+  "description": "A TypeScript module providing text analysis functionalities with various operations.",
+  "homepage": "https://textanalyserosc.netlify.app/showcase",
+  "bugs": {
+    "url": "https://github.com/abindent/textanalysis-tool/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abindent/textanalysis-tool.git"
+  },
+  "keywords": [
+    "text-analysis",
+    "string-manipulation",
+    "text-tools",
+    "typescript",
+    "url-extraction",
+    "character-count"
+  ],
+  "author": "Sinchan Maitra",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "packageManager": "pnpm@10.20.0",
+  "dependencies": {
+    "compromise": "^14.14.4",
+    "esrever": "^0.2.0",
+    "natural": "^8.1.0",
+    "wink-eng-lite-web-model": "^1.8.1",
+    "wink-nlp": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/esrever": "^0.2.3",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
