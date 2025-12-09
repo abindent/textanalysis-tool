@@ -45,7 +45,7 @@ export namespace Tools {
       email: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
       phoneNumber: /(?:\+\d{1,3}[-\s]?)?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}/g,
       hashtags: /#[a-zA-Z0-9_]+/g,
-      mentions: /(?<![a-zA-Z0-9.])@[a-zA-Z0-9_]+(?![a-zA-Z0-9.])/g,
+      mentions: /(?<![a-zA-Z0-9.])@[a-zA-Z0-9_]+(?![a-zA-Z0-9_])/g,
     };
   }
 
@@ -134,6 +134,7 @@ export namespace Tools {
    */
   export class Analyser {
     public raw_text: string;
+    public output: string;
     public count: number = 0;
     public alphacount: number = 0;
     public numericcount: number = 0;
@@ -181,6 +182,7 @@ export namespace Tools {
       }
 
       this.raw_text = raw_text || ""; // Fallback to empty string if raw_text is empty
+      this.output = this.raw_text;
       this.builtInOptions = options;
 
       // Initialize Extension Classes
@@ -281,7 +283,7 @@ export namespace Tools {
      * @summary Removes all alphabetic characters from the input text.
      */
     private async removeAlphabets(): Promise<void> {
-      this.raw_text = this.raw_text.replace(ToolsConstant.regex.alphabets, "");
+      this.output = this.output.replace(ToolsConstant.regex.alphabets, "");
       this.logOperation("Removed Alphabets");
     }
 
@@ -292,7 +294,7 @@ export namespace Tools {
      * @summary Removes all numeric characters from the input text.
      */
     private async removeNumbers(): Promise<void> {
-      this.raw_text = this.raw_text.replace(ToolsConstant.regex.numbers, "");
+      this.output = this.output.replace(ToolsConstant.regex.numbers, "");
       this.logOperation("Removed Numbers");
     }
 
@@ -303,7 +305,7 @@ export namespace Tools {
      * @summary Removes all punctuation characters from the input text.
      */
     private async removePunctuations(): Promise<void> {
-      this.raw_text = this.raw_text.replace(
+      this.output = this.output.replace(
         ToolsConstant.regex.punctuations,
         "",
       );
@@ -317,7 +319,7 @@ export namespace Tools {
      * @summary Removes all special characters from the input text.
      */
     private async removeSpecialCharacters(): Promise<void> {
-      this.raw_text = this.raw_text.replace(
+      this.output = this.output.replace(
         ToolsConstant.regex.specialCharacters,
         "",
       );
@@ -331,7 +333,7 @@ export namespace Tools {
      * @summary Removes extra spaces and trims the input text.
      */
     private async extraSpaceRemover(): Promise<void> {
-      this.raw_text = this.raw_text
+      this.output = this.output
         .replace(ToolsConstant.regex.extraSpaces, " ")
         .trim();
       this.logOperation("Removed Extra Spaces");
@@ -344,7 +346,7 @@ export namespace Tools {
      * @summary Removes newline characters from the input text.
      */
     private async newLineRemover(): Promise<void> {
-      this.raw_text = this.raw_text
+      this.output = this.output
         .replace(ToolsConstant.regex.newlines, "\n")
         .trim();
       this.logOperation("Removed New Line Characters");
@@ -413,7 +415,7 @@ export namespace Tools {
      * @summary Converts all characters in the input text to uppercase.
      */
     private async toFullUppercase(): Promise<void> {
-      this.raw_text = this.raw_text.toUpperCase();
+      this.output = this.output.toUpperCase();
       this.logOperation("Changed to Uppercase");
     }
 
@@ -424,7 +426,7 @@ export namespace Tools {
      * @summary Converts all characters in the input text to lowercase.
      */
     private async toFullLowercase(): Promise<void> {
-      this.raw_text = this.raw_text.toLowerCase();
+      this.output = this.output.toLowerCase();
       this.logOperation("Changed to Lowercase");
     }
 
@@ -435,7 +437,7 @@ export namespace Tools {
      * @summary Converts the input text to title case (first letter of each word capitalized).
      */
     private async toTitleCase(): Promise<void> {
-      this.raw_text = this.raw_text.replace(/\w\S*/g, (txt) => {
+      this.output = this.output.replace(/\w\S*/g, (txt) => {
         return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
       });
       this.logOperation("Changed to Title Case");
@@ -550,7 +552,7 @@ export namespace Tools {
      * @summary Reverses the input text.
      */
     private async reverseText(): Promise<void> {
-      this.raw_text = esrever.reverse(this.raw_text);
+      this.output = esrever.reverse(this.output);
       this.logOperation("Reversed Text");
     }
 
@@ -571,11 +573,11 @@ export namespace Tools {
 
       const { maxLength, suffix = "..." } = config;
 
-      if (this.raw_text.length <= maxLength) {
+      if (this.output.length <= maxLength) {
         return; // No truncation needed
       }
 
-      this.raw_text = this.raw_text.substring(0, maxLength) + suffix;
+      this.output = this.output.substring(0, maxLength) + suffix;
       this.logOperation(`Truncated Text to ${maxLength} characters`);
     }
 
@@ -708,7 +710,7 @@ export namespace Tools {
       this.customOperations[commandName] = async () => {
         try {
           const originalText = this.raw_text;
-          this.raw_text = config.operation(this.raw_text);
+          this.output = config.operation(this.output);
           this.logOperation(`${logName}`, true);
 
           // Initialize custom metadata object if it doesn't exist
@@ -827,7 +829,7 @@ export namespace Tools {
         if (typeof newText !== "string") {
           throw new Error("New text must be a string");
         }
-        this.raw_text = newText;
+        this.output = newText;
       }
 
       // Reset all counters and extracted data
@@ -877,7 +879,7 @@ export namespace Tools {
 
       const result: AnalyserResult = {
         purpose: this.operations.join(","),
-        output: this.raw_text,
+        output: this.output,
         operations: [...this.operations],
         builtInOperations: [...this.builtInOperationsList],
         customOperations: [...this.customOperationsList],

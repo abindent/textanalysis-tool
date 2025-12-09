@@ -129,7 +129,6 @@ describe("Text Analysis Tools", () => {
       });
 
       const result = await analyser.main();
-      console.log(result.metadata.readability);
       expect(result.metadata.readability).toBeDefined();
       expect(result.metadata.readability?.readabilityScore).toBeDefined();
       expect(result.metadata.readability?.smogIndex).toBeDefined(); // Check for SMOG support
@@ -329,11 +328,11 @@ describe("Text Analysis Tools", () => {
 
       // Reset with new text
       await analyser.resetText("New text");
-      expect(analyser.raw_text).toBe("New text");
+      expect(analyser.output).toBe("New text");
 
       // Reset without argument should keep the current text
       await analyser.resetText();
-      expect(analyser.raw_text).toBe("New text");
+      expect(analyser.output).toBe("New text");
     });
   });
 

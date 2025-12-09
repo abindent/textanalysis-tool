@@ -41,7 +41,7 @@ var Tools;
         email: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
         phoneNumber: /(?:\+\d{1,3}[-\s]?)?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}/g,
         hashtags: /#[a-zA-Z0-9_]+/g,
-        mentions: /@[a-zA-Z0-9_]+/g,
+        mentions: /(?<![a-zA-Z0-9.])@[a-zA-Z0-9_]+(?![a-zA-Z0-9.])/g,
     };
     Tools.ToolsConstant = ToolsConstant;
     /**
@@ -74,7 +74,6 @@ var Tools;
         Operations["Truncate"] = "truncate";
         Operations["ExtractKeywords"] = "extractKeywords";
         Operations["AnalyzeSentiment"] = "analyzeSentiment";
-        Operations["SummarizeText"] = "summarizeText";
         Operations["CalculateReadability"] = "calculateReadability";
         Operations["DetectLanguage"] = "detectLanguage";
         Operations["CompareTexts"] = "compareTexts";

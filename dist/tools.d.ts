@@ -63,7 +63,6 @@ export declare namespace Tools {
         Truncate = "truncate",
         ExtractKeywords = "extractKeywords",
         AnalyzeSentiment = "analyzeSentiment",
-        SummarizeText = "summarizeText",
         CalculateReadability = "calculateReadability",
         DetectLanguage = "detectLanguage",
         CompareTexts = "compareTexts"
