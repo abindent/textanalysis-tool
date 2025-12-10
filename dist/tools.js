@@ -41,7 +41,7 @@ var Tools;
         email: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
         phoneNumber: /(?:\+\d{1,3}[-\s]?)?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}/g,
         hashtags: /#[a-zA-Z0-9_]+/g,
-        mentions: /(?<![a-zA-Z0-9.])@[a-zA-Z0-9_]+(?![a-zA-Z0-9.])/g,
+        mentions: /(?<![a-zA-Z0-9.])@[a-zA-Z0-9_]+(?![a-zA-Z0-9_])/g,
     };
     Tools.ToolsConstant = ToolsConstant;
     /**
@@ -114,6 +114,7 @@ var Tools;
                 throw new Error("Input text must be a string");
             }
             this.raw_text = raw_text || ""; // Fallback to empty string if raw_text is empty
+            this.output = this.raw_text;
             this.builtInOptions = options;
             // Initialize Extension Classes
             this.sentimentAnalyzer = new extensions_1.SentimentAnalyzer();
@@ -198,7 +199,7 @@ var Tools;
          * @summary Removes all alphabetic characters from the input text.
          */
         async removeAlphabets() {
-            this.raw_text = this.raw_text.replace(ToolsConstant.regex.alphabets, "");
+            this.output = this.output.replace(ToolsConstant.regex.alphabets, "");
             this.logOperation("Removed Alphabets");
         }
         /**
@@ -208,7 +209,7 @@ var Tools;
          * @summary Removes all numeric characters from the input text.
          */
         async removeNumbers() {
-            this.raw_text = this.raw_text.replace(ToolsConstant.regex.numbers, "");
+            this.output = this.output.replace(ToolsConstant.regex.numbers, "");
             this.logOperation("Removed Numbers");
         }
         /**
@@ -218,7 +219,7 @@ var Tools;
          * @summary Removes all punctuation characters from the input text.
          */
         async removePunctuations() {
-            this.raw_text = this.raw_text.replace(ToolsConstant.regex.punctuations, "");
+            this.output = this.output.replace(ToolsConstant.regex.punctuations, "");
             this.logOperation("Removed Punctuations");
         }
         /**
@@ -228,7 +229,7 @@ var Tools;
          * @summary Removes all special characters from the input text.
          */
         async removeSpecialCharacters() {
-            this.raw_text = this.raw_text.replace(ToolsConstant.regex.specialCharacters, "");
+            this.output = this.output.replace(ToolsConstant.regex.specialCharacters, "");
             this.logOperation("Removed Special Characters");
         }
         /**
@@ -238,7 +239,7 @@ var Tools;
          * @summary Removes extra spaces and trims the input text.
          */
         async extraSpaceRemover() {
-            this.raw_text = this.raw_text
+            this.output = this.output
                 .replace(ToolsConstant.regex.extraSpaces, " ")
                 .trim();
             this.logOperation("Removed Extra Spaces");
@@ -250,7 +251,7 @@ var Tools;
          * @summary Removes newline characters from the input text.
          */
         async newLineRemover() {
-            this.raw_text = this.raw_text
+            this.output = this.output
                 .replace(ToolsConstant.regex.newlines, "\n")
                 .trim();
             this.logOperation("Removed New Line Characters");
@@ -313,7 +314,7 @@ var Tools;
          * @summary Converts all characters in the input text to uppercase.
          */
         async toFullUppercase() {
-            this.raw_text = this.raw_text.toUpperCase();
+            this.output = this.output.toUpperCase();
             this.logOperation("Changed to Uppercase");
         }
         /**
@@ -323,7 +324,7 @@ var Tools;
          * @summary Converts all characters in the input text to lowercase.
          */
         async toFullLowercase() {
-            this.raw_text = this.raw_text.toLowerCase();
+            this.output = this.output.toLowerCase();
             this.logOperation("Changed to Lowercase");
         }
         /**
@@ -333,7 +334,7 @@ var Tools;
          * @summary Converts the input text to title case (first letter of each word capitalized).
          */
         async toTitleCase() {
-            this.raw_text = this.raw_text.replace(/\w\S*/g, (txt) => {
+            this.output = this.output.replace(/\w\S*/g, (txt) => {
                 return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
             });
             this.logOperation("Changed to Title Case");
@@ -426,7 +427,7 @@ var Tools;
          * @summary Reverses the input text.
          */
         async reverseText() {
-            this.raw_text = esrever_1.default.reverse(this.raw_text);
+            this.output = esrever_1.default.reverse(this.output);
             this.logOperation("Reversed Text");
         }
         /**
@@ -441,10 +442,10 @@ var Tools;
                 throw new Error("Truncate operation requires a valid configuration with maxLength");
             }
             const { maxLength, suffix = "..." } = config;
-            if (this.raw_text.length <= maxLength) {
+            if (this.output.length <= maxLength) {
                 return; // No truncation needed
             }
-            this.raw_text = this.raw_text.substring(0, maxLength) + suffix;
+            this.output = this.output.substring(0, maxLength) + suffix;
             this.logOperation(`Truncated Text to ${maxLength} characters`);
         }
         /**
@@ -541,7 +542,7 @@ var Tools;
             this.customOperations[commandName] = async () => {
                 try {
                     const originalText = this.raw_text;
-                    this.raw_text = config.operation(this.raw_text);
+                    this.output = config.operation(this.output);
                     this.logOperation(`${logName}`, true);
                     // Initialize custom metadata object if it doesn't exist
                     if (!this.metadata.custom) {
@@ -641,7 +642,7 @@ var Tools;
                 if (typeof newText !== "string") {
                     throw new Error("New text must be a string");
                 }
-                this.raw_text = newText;
+                this.output = newText;
             }
             // Reset all counters and extracted data
             this.count = 0;
@@ -686,7 +687,7 @@ var Tools;
             const executionTime = this.executionEndTime - this.executionStartTime;
             const result = {
                 purpose: this.operations.join(","),
-                output: this.raw_text,
+                output: this.output,
                 operations: [...this.operations],
                 builtInOperations: [...this.builtInOperationsList],
                 customOperations: [...this.customOperationsList],

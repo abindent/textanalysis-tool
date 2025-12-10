@@ -112,6 +112,7 @@ export declare namespace Tools {
      */
     class Analyser {
         raw_text: string;
+        output: string;
         count: number;
         alphacount: number;
         numericcount: number;

@@ -36,8 +36,10 @@
   ],
   "packageManager": "pnpm@10.20.0",
   "dependencies": {
+    "@babel/runtime": "^7.28.4",
     "compromise": "^14.14.4",
     "esrever": "^0.2.0",
+    "intl-segmenter-polyfill": "^0.4.4",
     "natural": "^8.1.0",
     "wink-eng-lite-web-model": "^1.8.1",
     "wink-nlp": "^2.4.0"
