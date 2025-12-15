@@ -1,3 +1,4 @@
+import 'intl-segmenter-polyfill';
 import { type SentimentResult, type ReadabilityResult, type TextDiffResult, type LanguageDetectionResult } from "./extensions";
 /**
  * @namespace Tools

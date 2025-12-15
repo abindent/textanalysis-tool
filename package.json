@@ -1,6 +1,6 @@
 {
   "name": "textanalysis-tool",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A TypeScript module providing text analysis functionalities with various operations.",
   "homepage": "https://textanalyserosc.netlify.app/showcase",
   "bugs": {
@@ -34,23 +34,31 @@
     "LICENSE",
     "README.md"
   ],
-  "packageManager": "pnpm@10.20.0",
   "dependencies": {
-    "@babel/runtime": "^7.28.4",
     "compromise": "^14.14.4",
     "esrever": "^0.2.0",
+    "franc": "^6.2.0",
+    "franc-all": "^7.2.0",
     "intl-segmenter-polyfill": "^0.4.4",
+    "iso-639-3": "^3.0.1",
     "natural": "^8.1.0",
-    "wink-eng-lite-web-model": "^1.8.1",
-    "wink-nlp": "^2.4.0"
+    "trigram-utils": "^2.0.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@babel/runtime": "^7.28.4",
     "@types/esrever": "^0.2.3",
     "@types/jest": "^30.0.0",
+    "@types/natural": "^5.1.5",
     "@types/node": "^24.10.1",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "optionalDependencies": {
+    "wink-eng-lite-web-model": "^1.8.1",
+    "wink-nlp": "^2.4.0"
   }
 }

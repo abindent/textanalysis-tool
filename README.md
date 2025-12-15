@@ -1,63 +1,33 @@
 # 🌟 Text Analysis Tools 🌟
 
-[![npm version](https://img.shields.io/npm/v/textanalysis-tool.svg)](https://www.npmjs.com/package/textanalysis-tool)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  [![TypeScript](https://img.shields.io/badge/%3C/%3E-TypeScript-blue)](https://www.typescriptlang.org/)
+[![npm version](https://img.shields.io/npm/v/textanalysis-tool.svg)](https://www.npmjs.com/package/textanalysis-tool) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/%3C/%3E-TypeScript-blue)](https://www.typescriptlang.org/)
 
-> 🚀 A lightning-fast ⚡ TypeScript library for 🤖 text analysis and 🔧 manipulation.  Bundled with everything from simple cleanup to deep linguistic insights!  📦
+> 🚀 A lightning-fast ⚡ TypeScript library for 🤖 text analysis and 🔧 manipulation. Bundled with everything from simple cleanup to deep linguistic insights! 📦
 
 ---
+
 ## 🗂️ Table of Contents
-- [🌟 Text Analysis Tools 🌟](#-text-analysis-tools-)
-  - [🗂️ Table of Contents](#️-table-of-contents)
-  - [⬇️ Installation](#️-installation)
-  - [🧩 Usage](#-usage)
-    - [🔰 Basic Usage](#-basic-usage)
-    - [⚙️ Working with Operations](#️-working-with-operations)
-    - [🧠 Advanced Analysis](#-advanced-analysis)
-    - [🏭 Using Factory Methods](#-using-factory-methods)
-    - [📦 Batch Processing](#-batch-processing)
-  - [🛠️ Available Operations](#️-available-operations)
-    - [🗑️ Text Removal](#️-text-removal)
-    - [📤 Text Extraction](#-text-extraction)
-    - [🔄 Text Transformation](#-text-transformation)
-    - [🔢 Text Counting](#-text-counting)
-    - [🔮 Advanced Analysis Options](#-advanced-analysis-options)
-  - [🎨 Custom Operations](#-custom-operations)
-    - [➕ Adding Custom Operations](#-adding-custom-operations)
-    - [📊 With Metadata Extraction](#-with-metadata-extraction)
-  - [🚀 Advanced Usage](#-advanced-usage)
-    - [🔘 Toggling Operations](#-toggling-operations)
-    - [🔀 Managing Multiple Operations](#-managing-multiple-operations)
-    - [🔄 Resetting Text](#-resetting-text)
-    - [✂️ Truncating Text](#️-truncating-text)
-  - [🔬 Direct Use of Analytical Extensions](#-direct-use-of-analytical-extensions)
-    - [😊 SentimentAnalyzer – Deep Dive](#-sentimentanalyzer--deep-dive)
-    - [📊 CalculateReadability – Complete Guide](#-calculatereadability--complete-guide)
-    - [🔄 CompareTexts – Text Comparison & Diff](#-comparetexts--text-comparison--diff)
-    - [🌐 Language Detection](#-language-detection)
-    - [🎯 Combined Analysis Example](#-combined-analysis-example)
-  - [📘 API Reference](#-api-reference)
-    - [🧰 Tools. Analyser Class](#-toolsanalyser-class)
-    - [🧩 Tools.Operations Enum](#-toolsoperations-enum)
-    - [🔍 Tools. ToolsConstant Class](#-toolstoolsconstant-class)
-    - [📋 Interface Types](#-interface-types)
-    - [🔌 Extensions](#-extensions)
-  - [😊 SentimentAnalyzer](#-sentimentanalyzer)
-  - [📊 TextStatistics](#-textstatistics)
-  - [🌐 LanguageDetector](#-languagedetector)
-  - [🔍 TextDiff](#-textdiff)
-  - [🧩 Interfaces & Types](#-interfaces--types)
-    - [😀 SentimentResult](#-sentimentresult)
-    - [🏷️ SentimentClassification](#️-sentimentclassification)
-    - [📖 ReadabilityResult](#-readabilityresult)
-    - [🗣️ LanguageDetectionResult](#️-languagedetectionresult)
-    - [🔄 TextDiffResult](#-textdiffresult)
-  - [🤝 Contributing](#-contributing)
-  - [📝 License](#-license)
+
+- [⬇️ Installation](#️-installation)
+- [🧩 Usage](#-usage)
+  - [📰 Basic Usage](#-basic-usage)
+  - [⚙️ Working with Operations](#️-working-with-operations)
+  - [🧠 Advanced Analysis](#-advanced-analysis)
+  - [🏭 Using Factory Methods](#-using-factory-methods)
+  - [📦 Batch Processing](#-batch-processing)
+- [🛠️ Available Operations](#️-available-operations)
+- [🎨 Custom Operations](#-custom-operations)
+- [🚀 Advanced Usage](#-advanced-usage)
+- [🔬 Direct Use of Analytical Extensions](#-direct-use-of-analytical-extensions)
+- [📘 API Reference](#-api-reference)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
 ---
+
 ## ⬇️ Installation
 
-> _Install in one click!  ✨_
+> _Install in one click! ✨_
 
 ```bash
 npm install textanalysis-tool
@@ -79,193 +49,192 @@ yarn add textanalysis-tool
 
 ## 🧩 Usage
 
-### 🔰 Basic Usage
+### 📰 Basic Usage
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
-const text = "This is a sample text with 123 numbers and https://example.com URL! ";
+const text =
+  "This is a sample text with 123 numbers and https://example.com URL!";
 
-// Create analyzer using factory method
-const analyser = new Tools.Analyser(text, {
-  [Tools.Operations.CountCharacters]: true,
-  [Tools.Operations. CountWords]: true,
-  [Tools.Operations.ExtractUrls]: true
+// Create analyzer using factory method (recommended)
+const analyser = await Analyser.create(text, {
+  [Operations.CountCharacters]: true,
+  [Operations.CountWords]: true,
+  [Operations.ExtractUrls]: true,
 });
 
 // Run the analysis
-analyser.main()
-  .then(result => {
-    console.log("Text analysis results:");
-    console.log(`- Character count: ${result.metadata.counts.characterCount}`);
-    console.log(`- Word count: ${result. metadata.counts.wordCount}`);
-    console.log(`- URLs found: ${result.metadata.urls?. join(', ')}`);
-    console.log(`- Operations performed: ${result.operations.join(', ')}`);
-    console.log(`- Execution time: ${result.executionTime}ms`);
-  })
-  .catch(error => {
-    console.error('Analysis failed:', error);
-  });
+const result = await analyser.main();
+
+console.log("Text analysis results:");
+console.log(`- Character count: ${result.metadata.counts.characterCount}`);
+console.log(`- Word count: ${result.metadata.counts.wordCount}`);
+console.log(`- URLs found: ${result.metadata.urls?.join(", ")}`);
+console.log(`- Operations performed: ${result.operations.join(", ")}`);
+console.log(`- Execution time: ${result.executionTime}ms`);
 ```
 
 ### ⚙️ Working with Operations
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
-const analyser = new Tools.Analyser("Hello, world!  123 #hashtag @mention", {
+const analyser = await Analyser.create("Hello, world! 123 #hashtag @mention", {
   // Enable specific operations
-  [Tools.Operations. RemovePunctuations]: true,
-  [Tools. Operations.RemoveNumbers]: true,
-  [Tools. Operations.ConvertToUppercase]: true
+  [Operations.RemovePunctuations]: true,
+  [Operations.RemoveNumbers]: true,
+  [Operations.ConvertToUppercase]: true,
 });
 
-analyser.main(). then(result => {
-  console.log(result. output);  // "HELLO WORLD HASHTAG MENTION"
-});
+const result = await analyser.main();
+console.log(result.output); // "HELLO WORLD HASHTAG MENTION"
 ```
 
 ### 🧠 Advanced Analysis
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
-const paragraph = `This tool is amazing 🎯.  Sometimes you need exact control. `;
+const paragraph = `This tool is amazing 🎯. Sometimes you need exact control.`;
 
-const analyser = new Tools.Analyser(paragraph, {
-  [Tools.Operations. AnalyzeSentiment]: true,
-  [Tools.Operations.CalculateReadability]: true,
-  [Tools.Operations.DetectLanguage]: true,
-  [Tools.Operations.CompareTexts]: { compareWith: 'Other example text.' }
+const analyser = await Analyser.create(paragraph, {
+  [Operations.AnalyzeSentiment]: true,
+  [Operations.CalculateReadability]: true,
+  [Operations.DetectLanguage]: true,
+  [Operations.ExtractKeywords]: { topN: 5 },
+  [Operations.CompareTexts]: { compareWith: "Other example text." },
 });
 
-analyser.main().then(result => {
-  console.log('❤️ Sentiment:', result. metadata.sentiment);
-  console.log('📖 Readability:', result.metadata.readability);
-  console. log('🌍 Language:', result.metadata.languageDetection);
-  console.log('🔍 Text Diff:', result.metadata.textComparison);
-});
+const result = await analyser.main();
+
+console.log("❤️ Sentiment:", result.metadata.sentiment);
+console.log("📖 Readability:", result.metadata.readability);
+console.log("🌍 Language:", result.metadata.languageDetection);
+console.log("🔍 Text Diff:", result.metadata.textComparison);
+console.log("🔑 Keywords:", result.metadata.keywords);
 ```
 
 ### 🏭 Using Factory Methods
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
 // Create an analyzer with specific operations enabled
-const analyser = Tools.Analyser.createWithEnabledOperations(
-  "Hello, world! 123",
-  ['CountCharacters', 'CountWords', 'RemovePunctuations']
-);
+const analyser = Analyser.createWithEnabledOperations("Hello, world! 123", [
+  "CountCharacters",
+  "CountWords",
+  "RemovePunctuations",
+]);
 
-analyser.main().then(result => {
-  console.log(result.output);  // "Hello world 123"
-  console.log(`Words: ${result.metadata.counts. wordCount}`);
-  console.log(`Characters: ${result.metadata.counts. characterCount}`);
-});
+const result = await analyser.main();
+console.log(result.output); // "Hello world 123"
+console.log(`Words: ${result.metadata.counts.wordCount}`);
+console.log(`Characters: ${result.metadata.counts.characterCount}`);
 ```
 
 ### 📦 Batch Processing
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
 const texts = [
   "First sample with https://example1.com",
   "Second sample 12345 with #hashtags",
-  "Third sample with @mentions and emails@example.com"
+  "Third sample with @mentions and emails@example.com",
 ];
 
 const options = {
-  [Tools.Operations.CountWords]: true,
-  [Tools.Operations.ExtractUrls]: true,
-  [Tools.Operations.ExtractHashtags]: true,
-  [Tools.Operations.ExtractMentions]: true,
-  [Tools.Operations.ExtractEmails]: true
+  [Operations.CountWords]: true,
+  [Operations.ExtractUrls]: true,
+  [Operations.ExtractHashtags]: true,
+  [Operations.ExtractMentions]: true,
+  [Operations.ExtractEmails]: true,
 };
 
-Tools.Analyser.batch(texts, options)
-  .then(results => {
-    results.forEach((result, index) => {
-      console.log(`\nAnalysis of text #${index + 1}:`);
-      console.log(`- Word count: ${result.metadata.counts.wordCount}`);
-      console.log(`- URLs: ${result.metadata.urls?. join(', ') || 'None'}`);
-      console.log(`- Hashtags: ${result.metadata. hashtags?. join(', ') || 'None'}`);
-      console. log(`- Mentions: ${result.metadata.mentions?.join(', ') || 'None'}`);
-      console.log(`- Emails: ${result.metadata. emails?.join(', ') || 'None'}`);
-    });
-  });
+const results = await Analyser.batch(texts, options);
+
+results.forEach((result, index) => {
+  console.log(`\nAnalysis of text #${index + 1}:`);
+  console.log(`- Word count: ${result.metadata.counts.wordCount}`);
+  console.log(`- URLs: ${result.metadata.urls?.join(", ") || "None"}`);
+  console.log(`- Hashtags: ${result.metadata.hashtags?.join(", ") || "None"}`);
+  console.log(`- Mentions: ${result.metadata.mentions?.join(", ") || "None"}`);
+  console.log(`- Emails: ${result.metadata.emails?.join(", ") || "None"}`);
+});
 ```
+
+---
 
 ## 🛠️ Available Operations
 
 ### 🗑️ Text Removal
 
-| Operation             | Description                | Example Input       | Example Output    |
-| --------------------- | -------------------------- | ------------------- | ----------------- |
-| `RemovePunctuations`  | 🧹 Remove punctuation      | "Hello, world!"    | "Hello world"    |
-| `RemoveNumbers`       | 🔢 Remove numbers         | "abc123def"        | "abcdef"         |
-| `RemoveAlphabets`     | 🔡 Remove alphabets       | "abc123def"        | "123"            |
-| `RemoveSpecialChars`  | ✨ Remove special chars    | "Hi @you #1!"      | "Hi you 1"       |
-| `RemoveNewlines`      | ↩️ Remove newlines         | "Hello\nWorld"    | "Hello World"    |
-| `RemoveExtraSpaces`   | 📏 Trim extra spaces       | "  Hi   there  "   | "Hi there"       |
+| Operation            | Description             | Example Input   | Example Output |
+| -------------------- | ----------------------- | --------------- | -------------- |
+| `RemovePunctuations` | 🧹 Remove punctuation   | "Hello, world!" | "Hello world"  |
+| `RemoveNumbers`      | 🔢 Remove numbers       | "abc123def"     | "abcdef"       |
+| `RemoveAlphabets`    | 🔡 Remove alphabets     | "abc123def"     | "123"          |
+| `RemoveSpecialChars` | ✨ Remove special chars | "Hi @you #1!"   | "Hi you 1"     |
+| `RemoveNewlines`     | ↩️ Remove newlines      | "Hello\nWorld"  | "Hello World"  |
+| `RemoveExtraSpaces`  | 📏 Trim extra spaces    | " Hi there "    | "Hi there"     |
 
 ### 📤 Text Extraction
 
-| Operation              | Description              | Example Input                        | Example Output            |
-| ---------------------- | ------------------------ | ------------------------------------ | ------------------------- |
-| `ExtractUrls`          | 🌐 Extract URLs          | "Visit https://a.com and b.org"    | ["https://a.com"]       |
-| `ExtractEmails`        | ✉️ Extract emails        | "Email me at user@test.com"        | ["user@test.com"]       |
-| `ExtractPhoneNumbers`  | 📞 Extract phone numbers | "Call 123-456-7890"                | ["123-456-7890"]        |
-| `ExtractHashtags`      | #️⃣ Extract hashtags     | "#fun #code"                       | ["#fun","#code"]      |
-| `ExtractMentions`      | @️⃣ Extract mentions     | "Hi @user!"                        | ["@user"]               |
-| `ExtractKeywords`      | 🔑 Extract keywords (TF-IDF) | "The quick brown fox" | ["quick", "brown", "fox"] |
+| Operation             | Description                  | Example Input                   | Example Output            |
+| --------------------- | ---------------------------- | ------------------------------- | ------------------------- |
+| `ExtractUrls`         | 🌐 Extract URLs              | "Visit https://a.com and b.org" | ["https://a.com"]         |
+| `ExtractEmails`       | ✉️ Extract emails            | "Email me at user@test.com"     | ["user@test.com"]         |
+| `ExtractPhoneNumbers` | 📞 Extract phone numbers     | "Call 123-456-7890"             | ["123-456-7890"]          |
+| `ExtractHashtags`     | #️⃣ Extract hashtags          | "#fun #code"                    | ["#fun","#code"]          |
+| `ExtractMentions`     | @️⃣ Extract mentions          | "Hi @user!"                     | ["@user"]                 |
+| `ExtractKeywords`     | 🔑 Extract keywords (TF-IDF) | "The quick brown fox"           | ["quick", "brown", "fox"] |
 
 ### 🔄 Text Transformation
 
-| Operation             | Description             | Example Input          | Example Output   |
-| --------------------- | ----------------------- | ---------------------- | ---------------- |
-| `ConvertToUppercase`  | 🔠 UPPERCASE conversion | "Hello World"         | "HELLO WORLD"   |
-| `ConvertToLowercase`  | 🔡 lowercase conversion | "Hello World"         | "hello world"   |
-| `ConvertToTitleCase`  | 🆎 Title Case           | "hello world"         | "Hello World"   |
-| `ReverseText`         | 🔁 Reverse text         | "abcde"               | "edcba"         |
-| `Truncate`            | ✂️ Truncate text        | (maxLength=5) "abcdef"| "abcde..."      |
+| Operation            | Description             | Example Input          | Example Output |
+| -------------------- | ----------------------- | ---------------------- | -------------- |
+| `ConvertToUppercase` | 🔠 UPPERCASE conversion | "Hello World"          | "HELLO WORLD"  |
+| `ConvertToLowercase` | 🔡 lowercase conversion | "Hello World"          | "hello world"  |
+| `ConvertToTitleCase` | 🆎 Title Case           | "hello world"          | "Hello World"  |
+| `ReverseText`        | 🔄 Reverse text         | "abcde"                | "edcba"        |
+| `Truncate`           | ✂️ Truncate text        | (maxLength=5) "abcdef" | "abcde..."     |
 
 ### 🔢 Text Counting
 
-| Operation              | Description              | Example Input | Example Output      |
-| ---------------------- | ------------------------ | ------------- | ------------------- |
-| `CountCharacters`      | 🔠 Count non-space chars | "Hi!"        | 3                   |
-| `CountAlphabets`       | 📝 Count letters         | "A1b2C"      | 3                   |
-| `CountNumbers`         | 🔢 Count digits         | "A1b2C"      | 2                   |
-| `CountAlphanumeric`    | 🔤 Letters+digits count  | "A1 b2!"     | { alph:3, num:2 }   |
-| `CountWords`           | 📝 Count words           | "Hello world"| 2                   |
-| `CountSentences`       | 📑 Count sentences       | "Hi.  Bye?"   | 2                   |
+| Operation           | Description              | Example Input | Example Output    |
+| ------------------- | ------------------------ | ------------- | ----------------- |
+| `CountCharacters`   | 🔠 Count non-space chars | "Hi!"         | 3                 |
+| `CountAlphabets`    | 🔤 Count letters         | "A1b2C"       | 3                 |
+| `CountNumbers`      | 🔢 Count digits          | "A1b2C"       | 2                 |
+| `CountAlphanumeric` | 🔤 Letters+digits count  | "A1 b2!"      | { alph:3, num:2 } |
+| `CountWords`        | 📝 Count words           | "Hello world" | 2                 |
+| `CountSentences`    | 📄 Count sentences       | "Hi. Bye?"    | 2                 |
 
 ### 🔮 Advanced Analysis Options
 
-| Operation               | Description                      | Example Input                       | Example Output                  |
-| ----------------------- | -------------------------------- | ------------------------------------ | ------------------------------- |
-| `AnalyzeSentiment`      | ❤️ Sentiment analysis (Ensemble) | "I love this!"                    | { score:0.8, classification:"positive" }|
-| `CalculateReadability`  | 📖 Flesch-Kincaid & SMOG scores | "The quick brown fox jumps..."    | { readabilityScore:70, gradeLevel:5, smogIndex:7 }           |
-| `DetectLanguage`        | 🌍 Language detection           | "Bonjour le monde"                | { detectedLanguage:"french", confidence:0.9 }           |
-| `CompareTexts`          | 🔍 Text diff & similarity       | { compareWith: "other text" }     | { similarity:45. 5, wordDifference:{... } }  |
-| `ExtractKeywords`       | 🔑 TF-IDF keyword extraction    | "machine learning algorithms"     | ["machine", "learning", "algorithms"] |
+| Operation              | Description                      | Example Input                   | Example Output                                       |
+| ---------------------- | -------------------------------- | ------------------------------- | ---------------------------------------------------- |
+| `AnalyzeSentiment`     | ❤️ Sentiment analysis (Ensemble) | "I love this!"                  | `{ score:0.8, classification:"positive" }`           |
+| `CalculateReadability` | 📖 Flesch-Kincaid & SMOG scores  | "The quick brown fox jumps..."  | `{ readabilityScore:70, gradeLevel:5, smogIndex:7 }` |
+| `DetectLanguage`       | 🌍 Language detection            | "Bonjour le monde"              | `{ detectedLanguage:"fra", confidence:90 }`          |
+| `CompareTexts`         | 🔍 Text diff & similarity        | `{ compareWith: "other text" }` | `{ similarity:45.5, wordDifference:{...} }`          |
+| `ExtractKeywords`      | 🔑 TF-IDF keyword extraction     | "machine learning algorithms"   | `["machine", "learning", "algorithms"]`              |
 
 ---
 
 ## 🎨 Custom Operations
 
-_Easily plug in your own workflows!  ✨_
+_Easily plug in your own workflows! ✨_
 
 ### ➕ Adding Custom Operations
 
 You can extend functionality by adding your own custom operations:
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser } from "textanalysis-tool";
 
-const analyser = new Tools.Analyser("Sample text for custom operation");
+const analyser = await Analyser.create("Sample text for custom operation");
 
 // Add a simple custom operation
 await analyser.addCustomOperation(
@@ -274,8 +243,8 @@ await analyser.addCustomOperation(
   {
     operation: (text) => `*${text}*`, // Operation function
     isEnabled: true, // Enable immediately
-    metadata: { decorationType: "asterisks" } // Additional metadata
-  }
+    metadata: { decorationType: "asterisks" }, // Additional metadata
+  },
 );
 
 // Run the analysis with the custom operation
@@ -287,9 +256,9 @@ console.log(result.metadata.custom?.surroundWithAsterisks); // { decorationType:
 ### 📊 With Metadata Extraction
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser } from "textanalysis-tool";
 
-const analyser = new Tools.Analyser("The code is 12345 and the pin is 6789");
+const analyser = await Analyser.create("The code is 12345 and the pin is 6789");
 
 // Add a custom operation with metadata extraction
 await analyser.addCustomOperation(
@@ -302,17 +271,19 @@ await analyser.addCustomOperation(
       const allNumbers = text.match(/\d+/g) || [];
       return {
         codes: allNumbers,
-        codeCount: allNumbers.length
+        codeCount: allNumbers.length,
       };
-    }
-  }
+    },
+  },
 );
 
 const result = await analyser.main();
 console.log(result.metadata.custom?.extractNumericCodes);
 // Output: { codes: ["12345", "6789"], codeCount: 2 }
 ```
+
 ---
+
 ## 🚀 Advanced Usage
 
 ### 🔘 Toggling Operations
@@ -320,33 +291,33 @@ console.log(result.metadata.custom?.extractNumericCodes);
 Enable or disable operations dynamically:
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
-const analyser = new Tools.Analyser("Sample text with 123 numbers");
+const analyser = await Analyser.create("Sample text with 123 numbers");
 
 // Enable specific operations
-await analyser.toggleOperation(Tools.Operations.RemoveNumbers, true);
-await analyser.toggleOperation(Tools.Operations.CountCharacters, true);
+await analyser.toggleOperation(Operations.RemoveNumbers, true);
+await analyser.toggleOperation(Operations.CountCharacters, true);
 
 // Run analysis
 let result = await analyser.main();
 console.log(result.output); // "Sample text with  numbers"
 
 // Disable and enable different operations
-await analyser.toggleOperation(Tools.Operations.RemoveNumbers, false);
-await analyser. toggleOperation(Tools.Operations.ConvertToUppercase, true);
+await analyser.toggleOperation(Operations.RemoveNumbers, false);
+await analyser.toggleOperation(Operations.ConvertToUppercase, true);
 
 // Run analysis again with new settings
-result = await analyser. main();
+result = await analyser.main();
 console.log(result.output); // "SAMPLE TEXT WITH 123 NUMBERS"
 ```
 
 ### 🔀 Managing Multiple Operations
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
-const analyser = new Tools.Analyser("Hello, world! 123");
+const analyser = await Analyser.create("Hello, world! 123");
 
 // Enable all available operations
 await analyser.enableAllOperations();
@@ -358,22 +329,22 @@ console.log("With all operations:", result.output);
 // Disable all operations
 await analyser.disableAllOperations();
 
-// Enable only specific operations using enum keys
-await analyser.toggleOperation(Tools.Operations.RemovePunctuations, true);
-await analyser.toggleOperation(Tools.Operations.ConvertToUppercase, true);
+// Enable only specific operations
+await analyser.toggleOperation(Operations.RemovePunctuations, true);
+await analyser.toggleOperation(Operations.ConvertToUppercase, true);
 
 // Run with only selected operations
-result = await analyser. main();
+result = await analyser.main();
 console.log("With selected operations:", result.output); // "HELLO WORLD 123"
 ```
 
 ### 🔄 Resetting Text
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
-const analyser = new Tools. Analyser("Original text", {
-  [Tools.Operations.ConvertToUppercase]: true
+const analyser = await Analyser.create("Original text", {
+  [Operations.ConvertToUppercase]: true,
 });
 
 // Run first analysis
@@ -384,48 +355,48 @@ console.log(result.output); // "ORIGINAL TEXT"
 await analyser.resetText("New content");
 
 // Run analysis again
-result = await analyser. main();
+result = await analyser.main();
 console.log(result.output); // "NEW CONTENT"
 ```
 
 ### ✂️ Truncating Text
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
+import { Analyser, Operations } from "textanalysis-tool";
 
-const longText = "This is a very long text that needs to be truncated to a reasonable length. ";
+const longText =
+  "This is a very long text that needs to be truncated to a reasonable length.";
 
-const analyser = new Tools.Analyser(longText, {
-  [Tools. Operations.Truncate]: {
+const analyser = await Analyser.create(longText, {
+  [Operations.Truncate]: {
     maxLength: 20,
-    suffix: "..." // Optional, defaults to "..."
-  }
+    suffix: "...", // Optional, defaults to "..."
+  },
 });
 
-analyser.main().then(result => {
-  console.log(result.output); // "This is a very long..."
-});
+const result = await analyser.main();
+console.log(result.output); // "This is a very long..."
 ```
 
 ---
 
 ## 🔬 Direct Use of Analytical Extensions
 
-You can use advanced analytical components directly (outside of `Tools.Analyser`) for specialized workflows:
+You can use advanced analytical components directly (outside of `Analyser`) for specialized workflows:
 
 ### 😊 SentimentAnalyzer – Deep Dive
 
 ```typescript
-import { SentimentAnalyzer } from 'textanalysis-tool/dist/extensions';
+import { SentimentAnalyzer } from "textanalysis-tool";
 
 const sentimentAnalyzer = new SentimentAnalyzer();
 
 // Example 1: Positive Text
 const positiveResult = sentimentAnalyzer.analyze(
-  "I absolutely love this amazing tool! It's fantastic and incredible!"
+  "I absolutely love this amazing tool! It's fantastic and incredible!",
 );
 console.log("Positive Analysis:");
-console.log(`Score: ${positiveResult.score}`);              // ~0.8 to 1.0
+console.log(`Score: ${positiveResult.score}`); // ~0.6 to 0.8
 console.log(`Classification: ${positiveResult.classification}`); // "positive"
 console.log(`Positive Words: ${positiveResult.positiveWordCount}`);
 console.log(`Negative Words: ${positiveResult.negativeWordCount}`);
@@ -433,25 +404,23 @@ console.log(`Total Words: ${positiveResult.totalWords}`);
 
 // Example 2: Negative Text
 const negativeResult = sentimentAnalyzer.analyze(
-  "This is terrible, awful, and the worst experience ever."
+  "This is terrible, awful, and the worst experience ever.",
 );
 console.log("\nNegative Analysis:");
-console. log(`Score: ${negativeResult.score}`);              // ~-0.8 to -1.0
+console.log(`Score: ${negativeResult.score}`); // ~-0.6 to -0.8
 console.log(`Classification: ${negativeResult.classification}`); // "negative"
 
 // Example 3: Neutral Text
-const neutralResult = sentimentAnalyzer.analyze(
-  "The weather today is cloudy."
-);
+const neutralResult = sentimentAnalyzer.analyze("The weather today is cloudy.");
 console.log("\nNeutral Analysis:");
-console. log(`Score: ${neutralResult.score}`);               // ~-0.1 to 0.1
+console.log(`Score: ${neutralResult.score}`); // ~-0.1 to 0.1
 console.log(`Classification: ${neutralResult.classification}`); // "neutral"
 
 // Example 4: Mixed Sentiment
 const mixedResult = sentimentAnalyzer.analyze(
-  "The product is good but the delivery was terrible."
+  "The product is good but the delivery was terrible.",
 );
-console. log("\nMixed Sentiment Analysis:");
+console.log("\nMixed Sentiment Analysis:");
 console.log(`Score: ${mixedResult.score}`);
 console.log(`Classification: ${mixedResult.classification}`);
 console.log(`Positive Words: ${mixedResult.positiveWordCount}`);
@@ -459,9 +428,10 @@ console.log(`Negative Words: ${mixedResult.negativeWordCount}`);
 ```
 
 **Output Example:**
+
 ```
 Positive Analysis:
-  Score: 0.85
+  Score: 0.72
   Classification: positive
   Positive Words: 4
   Negative Words: 0
@@ -477,18 +447,18 @@ Neutral Analysis:
 ### 📊 CalculateReadability – Complete Guide
 
 ```typescript
-import { TextStatistics } from 'textanalysis-tool/dist/extensions';
+import { TextStatistics } from "textanalysis-tool";
 
 const textStats = new TextStatistics();
 
 // Example 1: Simple Text (High Readability)
-const simpleText = "The cat sat on the mat.  It was happy.";
+const simpleText = "The cat sat on the mat. It was happy.";
 const simpleReadability = textStats.fleschKincaidReadability(simpleText);
 console.log("Simple Text Analysis:");
-console.log(`Readability Score: ${simpleReadability.readabilityScore}`);     // ~85-90
-console.log(`Grade Level: ${simpleReadability. gradeLevel}`);                 // ~1-2
-console.log(`SMOG Index: ${simpleReadability.smogIndex}`);                   // ~1-2
-console.log(`Complexity: ${simpleReadability.complexity}`);                  // "Very Easy"
+console.log(`Readability Score: ${simpleReadability.readabilityScore}`); // ~85-95
+console.log(`Grade Level: ${simpleReadability.gradeLevel}`); // ~1-3
+console.log(`SMOG Index: ${simpleReadability.smogIndex}`); // ~3-4
+console.log(`Complexity: ${simpleReadability.complexity}`); // "Very Easy" or "Easy"
 console.log(`Word Count: ${simpleReadability.wordCount}`);
 console.log(`Sentence Count: ${simpleReadability.sentenceCount}`);
 console.log(`Avg Words/Sentence: ${simpleReadability.avgWordsPerSentence}`);
@@ -498,28 +468,29 @@ console.log(`Avg Syllables/Word: ${simpleReadability.avgSyllablesPerWord}`);
 const academicText = `
   Comprehensive analysis of multifaceted organizational paradigms necessitates 
   sophisticated methodological frameworks. Contemporary methodological approaches 
-  facilitate understanding of pedagogical mechanisms and institutional structures. 
+  facilitate understanding of pedagogical mechanisms and institutional structures.
 `;
 const complexReadability = textStats.fleschKincaidReadability(academicText);
 console.log("\nComplex Academic Text Analysis:");
-console.log(`Readability Score: ${complexReadability.readabilityScore}`);    // ~25-35
-console.log(`Grade Level: ${complexReadability.gradeLevel}`);               // ~14-16 (College level)
-console.log(`Complexity: ${complexReadability.complexity}`);                // "Very Difficult"
+console.log(`Readability Score: ${complexReadability.readabilityScore}`); // ~20-35
+console.log(`Grade Level: ${complexReadability.gradeLevel}`); // ~14-18 (College level)
+console.log(`Complexity: ${complexReadability.complexity}`); // "Very Difficult" or "Difficult"
 
 // Example 3: News Article (Medium Readability)
 const newsText = `
-  The technology sector continues to evolve rapidly.  Artificial intelligence 
+  The technology sector continues to evolve rapidly. Artificial intelligence 
   is transforming businesses worldwide. Companies are investing significantly 
-  in machine learning infrastructure. 
+  in machine learning infrastructure.
 `;
 const newsReadability = textStats.fleschKincaidReadability(newsText);
 console.log("\nNews Article Analysis:");
-console.log(`Readability Score: ${newsReadability. readabilityScore}`);      // ~50-60
-console.log(`Grade Level: ${newsReadability. gradeLevel}`);                 // ~8-10
-console.log(`Complexity: ${newsReadability.complexity}`);                  // "Fairly Difficult"
+console.log(`Readability Score: ${newsReadability.readabilityScore}`); // ~50-65
+console.log(`Grade Level: ${newsReadability.gradeLevel}`); // ~8-11
+console.log(`Complexity: ${newsReadability.complexity}`); // "Fairly Difficult" or "Standard"
 ```
 
 **Readability Scale:**
+
 ```
 90-100: Very Easy (5th grade)
 80-89:  Easy (6th grade)
@@ -535,7 +506,7 @@ console.log(`Complexity: ${newsReadability.complexity}`);                  // "F
 ### 🔄 CompareTexts – Text Comparison & Diff
 
 ```typescript
-import { TextDiff } from 'textanalysis-tool/dist/extensions';
+import { TextDiff } from "textanalysis-tool";
 
 const textDiff = new TextDiff();
 
@@ -545,96 +516,109 @@ const text2 = "I love cats and birds";
 
 const diff1 = textDiff.compare(text1, text2);
 console.log("Simple Text Comparison:");
-console.log(`Similarity: ${diff1.similarity. toFixed(2)}%`);               // ~80%
-console.log(`Added Words: ${diff1.wordDifference. added. join(', ')}`);    // "birds"
-console.log(`Removed Words: ${diff1.wordDifference.removed.join(', ')}`); // "dogs"
-console.log(`Unchanged Words: ${diff1.wordDifference.unchangedCount}`);  // 4
+console.log(`Similarity: ${diff1.similarity.toFixed(2)}%`); // ~80%
+console.log(`Added Words: ${diff1.wordDifference.added.join(", ")}`); // "birds"
+console.log(`Removed Words: ${diff1.wordDifference.removed.join(", ")}`); // "dogs"
+console.log(`Unchanged Words: ${diff1.wordDifference.unchangedCount}`); // 4
 
 // Example 2: Code Comparison
 const originalCode = "const x = 10; const y = 20; console.log(x + y);";
 const modifiedCode = "const x = 10; const y = 30; console.log(x + y);";
 
 const diff2 = textDiff.compare(originalCode, modifiedCode);
-console. log("\nCode Comparison:");
-console.log(`Similarity: ${diff2.similarity. toFixed(2)}%`);
+console.log("\nCode Comparison:");
+console.log(`Similarity: ${diff2.similarity.toFixed(2)}%`);
 console.log(`Changes Detected:`);
-console.log(`+ Added: ${diff2.wordDifference.added.join(', ') || 'None'}`);
-console.log(`- Removed: ${diff2.wordDifference.removed.join(', ') || 'None'}`);
+console.log(`+ Added: ${diff2.wordDifference.added.join(", ") || "None"}`);
+console.log(`- Removed: ${diff2.wordDifference.removed.join(", ") || "None"}`);
 
 // Example 3: Document Versioning
 const v1 = "The project timeline extends to Q3 2024 with multiple milestones";
-const v2 = "The project timeline extends to Q4 2024 with several key milestones";
+const v2 =
+  "The project timeline extends to Q4 2024 with several key milestones";
 
 const diff3 = textDiff.compare(v1, v2);
 console.log("\nDocument Version Comparison:");
-console.log(`Similarity Ratio: ${(diff3.similarity / 100). toFixed(2)} (0. 0-1.0)`);
+console.log(
+  `Similarity Ratio: ${(diff3.similarity / 100).toFixed(2)} (0.0-1.0)`,
+);
 console.log(`Word Statistics:`);
 console.log(`+ Total Added: ${diff3.wordDifference.addedCount}`);
-console.log(`- Total Removed: ${diff3.wordDifference. removedCount}`);
-console. log(`- Unchanged: ${diff3.wordDifference.unchangedCount}`);
+console.log(`- Total Removed: ${diff3.wordDifference.removedCount}`);
+console.log(`= Unchanged: ${diff3.wordDifference.unchangedCount}`);
 
 // Example 4: Full Diff Output
 const before = "apple banana cherry date";
 const after = "apple blueberry cherry fig";
 
 const fullDiff = textDiff.compare(before, after);
-console. log("\nFull Difference Report:");
-console.log(`+ Added: [${fullDiff.wordDifference.added.join(', ')}]`);
-console.log(`- Removed: [${fullDiff.wordDifference. removed.join(', ')}]`);
-console.log(`Unchanged: [${fullDiff. wordDifference.unchanged.join(', ')}]`);
+console.log("\nFull Difference Report:");
+console.log(`+ Added: [${fullDiff.wordDifference.added.join(", ")}]`);
+console.log(`- Removed: [${fullDiff.wordDifference.removed.join(", ")}]`);
+console.log(`= Unchanged: [${fullDiff.wordDifference.unchanged.join(", ")}]`);
 console.log(`Overall Similarity: ${fullDiff.similarity.toFixed(1)}%`);
 ```
 
 ---
 
-### 🌐 Language Detection
+### 🌍 Language Detection
 
 ```typescript
-import { LanguageDetector } from 'textanalysis-tool/dist/extensions';
+import { LanguageDetector } from "textanalysis-tool";
 
 const detector = new LanguageDetector();
 
 // Example 1: English Detection
-const englishText = "Hello, how are you today?  This is a beautiful day.";
+const englishText = "Hello, how are you today? This is a beautiful day.";
 const engResult = detector.detect(englishText);
 console.log("English Detection:");
-console.log(`Detected Language: ${engResult.detectedLanguage}`);           // "english"
-console.log(`Confidence: ${(engResult.confidence * 100). toFixed(1)}%`);   // ~90%
-console.log(`Language Scores: ${JSON.stringify(engResult.scores)}`);
+console.log(`Detected Language: ${engResult.detectedLanguage}`); // "eng"
+console.log(`Language Name: ${engResult.languageName}`); // "English"
+console.log(`Confidence: ${engResult.confidence.toFixed(1)}%`); // ~90-95%
+console.log(`Alternative Languages:`, engResult.alternativeLanguages);
 
 // Example 2: French Detection
-const frenchText = "Bonjour, comment allez-vous?  C'est une belle journée.";
+const frenchText = "Bonjour, comment allez-vous? C'est une belle journée.";
 const frResult = detector.detect(frenchText);
 console.log("\nFrench Detection:");
-console.log(`Detected Language: ${frResult.detectedLanguage}`);
-console.log(`Confidence: ${(frResult.confidence * 100).toFixed(1)}%`);
+console.log(`Detected Language: ${frResult.detectedLanguage}`); // "fra"
+console.log(`Language Name: ${frResult.languageName}`); // "French"
+console.log(`Confidence: ${frResult.confidence.toFixed(1)}%`);
 
 // Example 3: Spanish Detection
 const spanishText = "Hola, ¿cómo estás? Este es un hermoso día.";
 const esResult = detector.detect(spanishText);
 console.log("\nSpanish Detection:");
-console. log(`Detected Language: ${esResult.detectedLanguage}`);
-console.log(`Confidence: ${(esResult.confidence * 100).toFixed(1)}%`);
+console.log(`Detected Language: ${esResult.detectedLanguage}`); // "spa"
+console.log(`Language Name: ${esResult.languageName}`); // "Spanish"
+console.log(`Confidence: ${esResult.confidence.toFixed(1)}%`);
 
-// Example 4: German Detection
-const germanText = "Hallo, wie geht es dir?  Dies ist ein wunderschöner Tag.";
-const deResult = detector.detect(germanText);
-console.log("\nGerman Detection:");
-console.log(`Detected Language: ${deResult.detectedLanguage}`);
-console.log(`Confidence: ${(deResult.confidence * 100).toFixed(1)}%`);
+// Example 4: With Options (Whitelist/Blacklist)
+const multiLangText = "Hello world";
+const customResult = detector.detect(multiLangText, {
+  whitelist: ["eng", "fra", "deu"], // Only consider these languages
+  minLength: 5, // Minimum text length
+});
+console.log("\nCustom Detection with Options:");
+console.log(
+  `Detected: ${customResult.languageName} (${customResult.detectedLanguage})`,
+);
+console.log(`Confidence: ${customResult.confidence.toFixed(1)}%`);
 
 // Example 5: Multilingual Detection
 const multilingualTexts = [
   { text: "Good morning world", lang: "English" },
   { text: "Buenos días mundo", lang: "Spanish" },
   { text: "Guten Morgen Welt", lang: "German" },
-  { text: "Bonjour le monde", lang: "French" }
+  { text: "Bonjour le monde", lang: "French" },
 ];
 
 console.log("\nMultilingual Detection Results:");
-multilingualTexts. forEach(item => {
+multilingualTexts.forEach((item) => {
   const result = detector.detect(item.text);
-  console.log(`  ${item.lang}: ${result.detectedLanguage} (${(result.confidence * 100).toFixed(0)}%)`);
+  console.log(
+    `  ${item.lang}: ${result.languageName} (${result.detectedLanguage}) - ${result.confidence.toFixed(0)}%`,
+  );
 });
 ```
 
@@ -643,13 +627,14 @@ multilingualTexts. forEach(item => {
 ### 🎯 Combined Analysis Example
 
 ```typescript
-import { Tools } from 'textanalysis-tool';
-import { 
-  SentimentAnalyzer, 
-  TextStatistics, 
+import {
+  Analyser,
+  Operations,
+  SentimentAnalyzer,
+  TextStatistics,
   TextDiff,
-  LanguageDetector 
-} from 'textanalysis-tool/dist/extensions';
+  LanguageDetector,
+} from "textanalysis-tool";
 
 // Complete analysis of customer feedback
 async function analyzeCustomerFeedback(feedback: string) {
@@ -657,217 +642,368 @@ async function analyzeCustomerFeedback(feedback: string) {
   const sentiment = new SentimentAnalyzer();
   const stats = new TextStatistics();
   const detector = new LanguageDetector();
-  
+
   // Perform analyses
   const sentimentResult = sentiment.analyze(feedback);
   const readabilityResult = stats.fleschKincaidReadability(feedback);
   const languageResult = detector.detect(feedback);
-  
-  // Use Tools. Analyser for additional metrics
-  const analyser = new Tools.Analyser(feedback, {
-    [Tools.Operations. CountWords]: true,
-    [Tools.Operations.CountSentences]: true,
-    [Tools.Operations.ExtractKeywords]: { topN: 5 }
+
+  // Use Analyser for additional metrics
+  const analyser = await Analyser.create(feedback, {
+    [Operations.CountWords]: true,
+    [Operations.CountSentences]: true,
+    [Operations.ExtractKeywords]: { topN: 5 },
   });
-  
+
   const toolsResult = await analyser.main();
-  
+
   // Compile comprehensive report
   const report = {
     sentiment: {
-      score: sentimentResult. score,
+      score: sentimentResult.score,
       classification: sentimentResult.classification,
       positiveWords: sentimentResult.positiveWordCount,
-      negativeWords: sentimentResult.negativeWordCount
+      negativeWords: sentimentResult.negativeWordCount,
     },
     readability: {
       score: readabilityResult.readabilityScore,
-      gradeLevel: readabilityResult. gradeLevel,
+      gradeLevel: readabilityResult.gradeLevel,
       complexity: readabilityResult.complexity,
-      avgWordsPerSentence: readabilityResult.avgWordsPerSentence
+      avgWordsPerSentence: readabilityResult.avgWordsPerSentence,
     },
     language: {
-      detected: languageResult.detectedLanguage,
-      confidence: (languageResult.confidence * 100).toFixed(1) + '%'
+      detected: languageResult.languageName,
+      code: languageResult.detectedLanguage,
+      confidence: languageResult.confidence.toFixed(1) + "%",
     },
     content: {
       wordCount: toolsResult.metadata.counts.wordCount,
-      sentenceCount: toolsResult.metadata.counts. sentenceCount,
-      keywords: toolsResult.metadata.keywords
-    }
+      sentenceCount: toolsResult.metadata.counts.sentenceCount,
+      keywords: toolsResult.metadata.keywords,
+    },
   };
-  
+
   return report;
 }
 
 // Usage
-const feedback = "This product is amazing! I absolutely love the quality and support.  Highly recommended!";
-analyzeCustomerFeedback(feedback).then(report => {
+const feedback =
+  "This product is amazing! I absolutely love the quality and support. Highly recommended!";
+analyzeCustomerFeedback(feedback).then((report) => {
   console.log("Customer Feedback Analysis Report:");
   console.log(JSON.stringify(report, null, 2));
 });
-
-// Output:
-// {
-//   "sentiment": {
-//     "score": 0.92,
-//     "classification": "positive",
-//     "positiveWords": 3,
-//     "negativeWords": 0
-//   },
-//   "readability": {
-//     "score": 78.5,
-//     "gradeLevel": 5,
-//     "complexity": "Fairly Easy",
-//     "avgWordsPerSentence": 6.5
-//   },
-//   "language": {
-//     "detected": "english",
-//     "confidence": "92. 5%"
-//   },
-//   "content": {
-//     "wordCount": 16,
-//     "sentenceCount": 3,
-//     "keywords": ["product", "quality", "support"]
-//   }
-// }
 ```
 
-> **Note:**  
-> These classes are accessible from `textanalysis-tool/dist/extensions`.   
-> If you wish to import directly from the root, consider submitting a PR to add re-exports to `src/index.ts`.
+**Output:**
+
+```json
+{
+  "sentiment": {
+    "score": 0.75,
+    "classification": "positive",
+    "positiveWords": 3,
+    "negativeWords": 0
+  },
+  "readability": {
+    "score": 78.5,
+    "gradeLevel": 5.2,
+    "complexity": "Fairly Easy",
+    "avgWordsPerSentence": 5.3
+  },
+  "language": {
+    "detected": "English",
+    "code": "eng",
+    "confidence": "92.5%"
+  },
+  "content": {
+    "wordCount": 16,
+    "sentenceCount": 3,
+    "keywords": ["product", "quality", "support", "love", "recommended"]
+  }
+}
+```
 
 ---
 
 ## 📘 API Reference
 
-### 🧰 Tools.Analyser Class
+### 🧰 Analyser Class
 
-The main class for text analysis operations.
+The main class for text analysis operations with support for both built-in and custom operations.
 
-**Static Factory Method:**
+#### Static Methods
 
+##### `Analyser.create()` (Recommended)
+
+**Description:** Asynchronous factory method that initializes the Analyser with pre-loaded lexicons and IDF maps for optimal performance.
 ```typescript
-static async create(raw_text: string, options: AnalyserBuiltInOptions = {}): Promise<Analyser>
-```
-> ⚠️ Use this factory method to ensure lexicons and IDF maps are loaded before analysis.
-
-**Constructor:**
-
-```typescript
-constructor(raw_text: string, options: AnalyserBuiltInOptions = {})
-```
-
-**Properties:**
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `raw_text` | string | The input text being analyzed |
-| `count` | number | The character count |
-| `alphacount` | number | The alphabetic character count |
-| `numericcount` | number | The numeric character count |
-| `wordCount` | number | The word count |
-| `sentenceCount` | number | The sentence count |
-| `urls` | string[] | Extracted URLs |
-| `emails` | string[] | Extracted email addresses |
-| `phoneNumbers` | string[] | Extracted phone numbers |
-| `hashtags` | string[] | Extracted hashtags |
-| `mentions` | string[] | Extracted mentions |
-| `keywords` | string[] | Extracted keywords (TF-IDF) |
-| `operations` | string[] | Log of operations performed |
-| `availableOperations` | Record<string, string> | All available operations |
-| `options` | AnalyserBuiltInOptions | Current operation options |
-
-**Methods:**
-
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
-| `main` | None | Promise<AnalyserResult> | Executes all enabled operations |
-| `addCustomOperation` | commandName: string, logName: string, config: object | Promise<void> | Adds a custom operation |
-| `toggleOperation` | commandName: string, isEnabled: boolean | Promise<void> | Enables/disables an operation |
-| `enableAllOperations` | None | Promise<void> | Enables all operations (both enum keys and values) |
-| `disableAllOperations` | None | Promise<void> | Disables all operations (both enum keys and values) |
-| `resetText` | newText?: string | Promise<void> | Resets text and clears all counters |
-
-**Static Methods:**
-
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
-| `create` | text: string, options?: AnalyserBuiltInOptions | Promise<Analyser> | Factory method that loads resources before creating instance |
-| `createWithEnabledOperations` | text: string, operations: (keyof typeof Operations)[] | Analyser | Creates instance with specific operations |
-| `batch` | texts: string[], options: AnalyserBuiltInOptions | Promise<AnalyserResult[]> | Processes multiple texts with same options |
-
-### 🧩 Tools.Operations Enum
-
-Enum of all built-in operations:
-
-```typescript
-export enum Operations {
-  RemovePunctuations = "removepunc",
-  RemoveNumbers = "removenum",
-  RemoveAlphabets = "removealpha",
-  RemoveSpecialChars = "removespecialchar",
-  RemoveNewlines = "newlineremover",
-  RemoveExtraSpaces = "extraspaceremover",
-  ExtractUrls = "extractUrls",
-  ExtractEmails = "extractEmails",
-  ExtractPhoneNumbers = "extractPhoneNumbers",
-  ExtractHashtags = "extractHashtags",
-  ExtractMentions = "extractMentions",
-  ConvertToUppercase = "fullcaps",
-  ConvertToLowercase = "lowercaps",
-  ConvertToTitleCase = "titlecase",
-  CountCharacters = "charcount",
-  CountAlphabets = "alphacount",
-  CountNumbers = "numcount",
-  CountAlphanumeric = "alphanumericcount",
-  CountWords = "wordcount",
-  CountSentences = "sentencecount",
-  ReverseText = "reversetext",
-  Truncate = "truncate",
-  ExtractKeywords = "extractKeywords",
-  AnalyzeSentiment = "analyzeSentiment",
-  CalculateReadability = "calculateReadability",
-  DetectLanguage = "detectLanguage",
-  CompareTexts = "compareTexts",
-}
+static async create(
+  raw_text: string,
+  options?: AnalyserBuiltInOptions,
+  languageOptions?: {
+    whitelist?: string[];
+    blacklist?: string[];
+    minLength?: number;
+  }
+): Promise<Analyser>
 ```
 
-### 🔍 Tools. ToolsConstant Class
+**Parameters:**
+- `raw_text` (string): The input text to analyze
+- `options` (AnalyserBuiltInOptions, optional): Configuration object for enabling operations
+- `languageOptions` (object, optional): Language detection options
+  - `whitelist` (string[]): ISO 639-3 language codes to consider
+  - `blacklist` (string[]): ISO 639-3 language codes to ignore
+  - `minLength` (number): Minimum text length for language detection
 
-Contains regular expression patterns used throughout the library:
+**Returns:** `Promise<Analyser>` - A fully initialized Analyser instance
 
+**Example:**
 ```typescript
-export class ToolsConstant {
-  static readonly regex = {
-    alphabets: /[a-zA-Z]/g,
-    numbers: /\d/g,
-    punctuations: /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g,
-    specialCharacters: /[^a-zA-Z0-9\s!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g,
-    urls: /https?:\/\/\S+/gi,
-    newlines: /^\s*$(? :\r\n? |\n)/gm,
-    extraSpaces: / +/g,
-    character: /[^\s\p{Cf}]/gu,
-    email: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
-    phoneNumber: /(? :\+\d{1,3}[-\s]?)?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}/g,
-    hashtags: /#[a-zA-Z0-9_]+/g,
-    mentions: /@[a-zA-Z0-9_]+/g
-  };
-}
+const analyser = await Analyser.create("Sample text", {
+  [Operations.CountWords]: true,
+  [Operations.AnalyzeSentiment]: true
+});
 ```
 
-### 📋 Interface Types
+---
 
-**AnalyserBuiltInOptions:**
+##### `Analyser.createWithEnabledOperations()`
+
+**Description:** Synchronous factory method to create an Analyser with specific operations enabled.
 ```typescript
-type AnalyserBuiltInOptions = Partial<Record<Operations | string, boolean | any>>;
+static createWithEnabledOperations(
+  text: string,
+  operations: (keyof typeof Operations)[]
+): Analyser
 ```
 
-**AnalyserResult:**
+**Parameters:**
+- `text` (string): The input text to analyze
+- `operations` (Array): Array of operation names to enable
+
+**Returns:** `Analyser` - Analyser instance with specified operations enabled
+
+**Example:**
+```typescript
+const analyser = Analyser.createWithEnabledOperations(
+  "Hello World 123",
+  ["CountWords", "RemoveNumbers", "ConvertToUppercase"]
+);
+```
+
+---
+
+##### `Analyser.batch()`
+
+**Description:** Process multiple texts with the same operations in batch mode.
+```typescript
+static async batch(
+  texts: string[],
+  options: AnalyserBuiltInOptions
+): Promise<AnalyserResult[]>
+```
+
+**Parameters:**
+- `texts` (string[]): Array of texts to process
+- `options` (AnalyserBuiltInOptions): Operations to apply to all texts
+
+**Returns:** `Promise<AnalyserResult[]>` - Array of analysis results
+
+**Example:**
+```typescript
+const results = await Analyser.batch(
+  ["Text 1", "Text 2", "Text 3"],
+  { [Operations.CountWords]: true }
+);
+```
+
+---
+
+#### Instance Methods
+
+##### `main()`
+
+**Description:** Executes all enabled operations and returns comprehensive analysis results.
+```typescript
+async main(): Promise<AnalyserResult>
+```
+
+**Returns:** `Promise<AnalyserResult>` - Complete analysis results
+
+**Example:**
+```typescript
+const analyser = await Analyser.create("Sample text", options);
+const result = await analyser.main();
+console.log(result.output);
+console.log(result.metadata);
+```
+
+---
+
+##### `addCustomOperation()`
+
+**Description:** Dynamically adds a custom text operation to the analyser.
+```typescript
+async addCustomOperation(
+  commandName: string,
+  logName: string,
+  config: {
+    operation: (text: string) => string;
+    isEnabled?: boolean;
+    metadata?: Record<string, any>;
+    metadataExtractor?: (text: string) => any;
+  }
+): Promise<void>
+```
+
+**Parameters:**
+- `commandName` (string): Unique identifier for the operation
+- `logName` (string): Human-readable name for logging
+- `config` (object): Configuration object
+  - `operation` (function): Function that transforms the text
+  - `isEnabled` (boolean, optional): Enable immediately (default: false)
+  - `metadata` (object, optional): Static metadata to include in results
+  - `metadataExtractor` (function, optional): Function to extract dynamic metadata
+
+**Throws:** Error if commandName already exists or parameters are invalid
+
+**Example:**
+```typescript
+await analyser.addCustomOperation(
+  "wrapInQuotes",
+  "Wrap in Quotes",
+  {
+    operation: (text) => `"${text}"`,
+    isEnabled: true,
+    metadata: { wrapType: "double-quotes" },
+    metadataExtractor: (text) => ({ originalLength: text.length })
+  }
+);
+```
+
+---
+
+##### `toggleOperation()`
+
+**Description:** Enable or disable an operation dynamically.
+```typescript
+async toggleOperation(
+  commandName: string,
+  isEnabled: boolean
+): Promise<void>
+```
+
+**Parameters:**
+- `commandName` (string): Name of the operation to toggle
+- `isEnabled` (boolean): True to enable, false to disable
+
+**Throws:** Error if operation doesn't exist
+
+**Example:**
+```typescript
+await analyser.toggleOperation(Operations.RemoveNumbers, true);
+await analyser.toggleOperation(Operations.CountWords, false);
+```
+
+---
+
+##### `enableAllOperations()`
+
+**Description:** Enables all available built-in and custom operations.
+```typescript
+async enableAllOperations(): Promise<void>
+```
+
+**Example:**
+```typescript
+await analyser.enableAllOperations();
+const result = await analyser.main();
+```
+
+---
+
+##### `disableAllOperations()`
+
+**Description:** Disables all operations.
+```typescript
+async disableAllOperations(): Promise<void>
+```
+
+**Example:**
+```typescript
+await analyser.disableAllOperations();
+```
+
+---
+
+##### `resetText()`
+
+**Description:** Resets the text to original or sets new text, clearing all counters and extracted data.
+```typescript
+async resetText(newText?: string): Promise<void>
+```
+
+**Parameters:**
+- `newText` (string, optional): New text to set. If omitted, resets to original
+
+**Example:**
+```typescript
+await analyser.resetText("New text content");
+```
+
+---
+
+#### Properties
+
+##### `availableOperations`
+
+**Description:** Read-only property returning all available operations (built-in + custom).
+
+**Type:** `Record<string, string>`
+
+**Example:**
+```typescript
+const ops = analyser.availableOperations;
+console.log(Object.keys(ops)); // ["RemovePunctuations", "CountWords", ...]
+```
+
+---
+
+##### `options`
+
+**Description:** Get or set current operation options.
+
+**Type:** `AnalyserBuiltInOptions`
+
+**Example:**
+```typescript
+// Get current options
+const currentOptions = analyser.options;
+
+// Set new options
+analyser.options = {
+  [Operations.CountWords]: true,
+  [Operations.RemoveNumbers]: false
+};
+```
+
+---
+
+### 📊 Result Interfaces
+
+#### `AnalyserResult`
+
+Complete analysis result returned by `main()`.
 ```typescript
 interface AnalyserResult {
-  purpose: string;
-  output: string;
+  purpose: string;                    // Comma-separated list of operations
+  output: string;                     // Transformed text
+  operations: string[];               // All operations performed
+  builtInOperations: string[];        // Built-in operations performed
+  customOperations: string[];         // Custom operations performed
+  executionTime?: number;             // Execution time in milliseconds
   metadata: {
     counts: {
       characterCount: number;
@@ -886,145 +1022,77 @@ interface AnalyserResult {
     sentiment?: SentimentResult;
     languageDetection?: LanguageDetectionResult;
     textComparison?: TextDiffResult;
-    custom?: {
-      [key: string]: any;
-    };
+    custom?: Record<string, any>;
   };
-  operations: string[];
-  builtInOperations: string[];
-  customOperations: string[];
-  executionTime?: number;
 }
 ```
 
-**TruncateConfig:**
-```typescript
-interface TruncateConfig {
-  maxLength: number;
-  suffix?: string;
-}
-```
-
-### 🔌 Extensions
-
-## 😊 SentimentAnalyzer
-
-An ensemble sentiment analysis utility using Natural, Wink-NLP, and Compromise libraries.
-
-**Constructor:**
-```typescript
-constructor()
-```
-
-**Methods:**
-
-| Method             | Parameters                                             | Return Type       | Description                                      |
-|--------------------|---------------------------------------------------------|-------------------|--------------------------------------------------|
-| `analyze`          | `text: string`                                          | `SentimentResult` | Executes ensemble sentiment analysis on the input text    |
-| `addCustomLexicon` | `lexicon: { positive?: string[]; negative?: string[] }` | `void`           | Adds custom positive/negative words (deprecated) |
-
 ---
 
-## 📊 TextStatistics
+#### `SentimentResult`
 
-A utility class for computing readability metrics such as the Flesch–Kincaid and SMOG scores.
-
-**Constructor:**
-```typescript
-constructor()
-```
-
-**Methods:**
-
-| Method                      | Parameters     | Return Type         | Description                                   |
-|----------------------------|----------------|---------------------|-----------------------------------------------|
-| `fleschKincaidReadability` | `text: string` | `ReadabilityResult` | Calculates Flesch Reading Ease, Flesch-Kincaid Grade, and SMOG Index |
-
----
-
-## 🌐 LanguageDetector
-
-An n-gram based language detection utility.  
-
-**Constructor:**
-```typescript
-constructor()
-```
-
-**Methods:**
-
-| Method               | Parameters                                    | Return Type               | Description                                    |
-|----------------------|----------------------------------------------|---------------------------|------------------------------------------------|
-| `detect`             | `text: string`                               | `LanguageDetectionResult` | Detects the most likely language for the text  |
-| `addCustomLanguage`  | `lang: string, profile: Record<string, number>` | `void`           | Registers a new language profile               |
-
----
-
-## 🔍 TextDiff
-
-A utility class for comparing two texts and computing similarity metrics.
-
-**Constructor:**
-```typescript
-constructor()
-```
-
-**Methods:**
-
-| Method    | Parameters                      | Return Type      | Description                                             |
-|-----------|--------------------------------|------------------|----------------------------------------------------------|
-| `compare` | `text1: string, text2: string` | `TextDiffResult` | Computes similarity percentage and word differences |
-
----
-
-## 🧩 Interfaces & Types
-
-### 😀 SentimentResult
+Sentiment analysis result from `AnalyzeSentiment` operation.
 ```typescript
 interface SentimentResult {
-  score: number;                                    // -1 to 1
-  positiveWordCount: number;
-  negativeWordCount: number;
-  totalWords: number;
-  classification: SentimentClassification;         // "positive", "negative", or "neutral"
+  score: number;                      // Sentiment score (-1 to 1)
+  positiveWordCount: number;          // Number of positive words
+  negativeWordCount: number;          // Number of negative words
+  totalWords: number;                 // Total word count
+  classification: "positive" | "negative" | "neutral";
 }
 ```
 
-### 🏷️ SentimentClassification
-```typescript
-type SentimentClassification = "positive" | "negative" | "neutral";
-```
+---
 
-### 📖 ReadabilityResult
+#### `ReadabilityResult`
+
+Readability metrics from `CalculateReadability` operation.
 ```typescript
 interface ReadabilityResult {
-  readabilityScore: number;     // Flesch Reading Ease (0-100)
-  gradeLevel: number;           // Flesch-Kincaid Grade Level
-  smogIndex: number;            // SMOG Index
+  readabilityScore: number;           // Flesch Reading Ease (0-100)
+  gradeLevel: number;                 // Flesch-Kincaid Grade Level
+  smogIndex: number;                  // SMOG readability index
   wordCount: number;
   sentenceCount: number;
   syllableCount: number;
   avgWordsPerSentence: number;
   avgSyllablesPerWord: number;
-  complexity: string;           // "Very Easy" to "Very Difficult"
+  complexity: string;                 // "Very Easy" | "Easy" | "Standard" | etc.
 }
 ```
 
-### 🗣️ LanguageDetectionResult
+---
+
+#### `LanguageDetectionResult`
+
+Language detection result from `DetectLanguage` operation.
 ```typescript
 interface LanguageDetectionResult {
-  detectedLanguage: string;
-  confidence: number;           // 0 to 1
-  scores: Record<string, number>;
+  detectedLanguage: string;           // ISO 639-3 language code
+  languageName: string;               // Human-readable language name
+  confidence: number;                 // Confidence score (0-100)
+  scores: Record<string, number>;     // All language scores
+  alternativeLanguages: Array<{
+    language: string;
+    languageName: string;
+    confidence: number;
+  }>;
 }
 ```
 
-### 🔄 TextDiffResult
+---
+
+#### `TextDiffResult`
+
+Text comparison result from `CompareTexts` operation.
 ```typescript
 interface TextDiffResult {
-  similarity: number;           // Percentage (0-100)
-  editDistance: number;
-  commonSubstrings: Array<{ substring: string; length: number }>;
+  similarity: number;                 // Similarity percentage (0-100)
+  editDistance: number;               // Levenshtein distance
+  commonSubstrings: Array<{
+    substring: string;
+    length: number;
+  }>;
   wordDifference: {
     added: string[];
     removed: string[];
@@ -1034,6 +1102,286 @@ interface TextDiffResult {
     unchangedCount: number;
   };
 }
+```
+
+---
+
+### 🔧 Extension Classes
+
+These classes can be used independently for specialized analysis.
+
+#### `SentimentAnalyzer`
+
+Ensemble sentiment analysis combining Natural, WinkNLP, and Compromise libraries.
+```typescript
+class SentimentAnalyzer {
+  constructor();
+  analyze(text: string): SentimentResult;
+}
+```
+
+**Example:**
+```typescript
+import { SentimentAnalyzer } from "textanalysis-tool";
+
+const analyzer = new SentimentAnalyzer();
+const result = analyzer.analyze("I love this product!");
+console.log(result.score);          // 0.75
+console.log(result.classification); // "positive"
+```
+
+---
+
+#### `TextStatistics`
+
+Calculate readability metrics using Flesch-Kincaid and SMOG formulas.
+```typescript
+class TextStatistics {
+  fleschKincaidReadability(text: string): ReadabilityResult;
+}
+```
+
+**Example:**
+```typescript
+import { TextStatistics } from "textanalysis-tool";
+
+const stats = new TextStatistics();
+const result = stats.fleschKincaidReadability("The quick brown fox jumps.");
+console.log(result.readabilityScore); // 85.2
+console.log(result.complexity);       // "Easy"
+```
+
+---
+
+#### `LanguageDetector`
+
+Detect language using n-gram profiles (supports 186 languages via franc library).
+```typescript
+class LanguageDetector {
+  constructor(minTextLength?: number);
+  detect(
+    text: string,
+    options?: {
+      whitelist?: string[];
+      blacklist?: string[];
+      minLength?: number;
+    }
+  ): LanguageDetectionResult;
+}
+```
+
+**Example:**
+```typescript
+import { LanguageDetector } from "textanalysis-tool";
+
+const detector = new LanguageDetector();
+const result = detector.detect("Bonjour le monde");
+console.log(result.detectedLanguage); // "fra"
+console.log(result.languageName);     // "French"
+console.log(result.confidence);       // 95.2
+```
+
+---
+
+#### `KeywordExtractor`
+
+Extract keywords using TF-IDF (Term Frequency-Inverse Document Frequency).
+```typescript
+class KeywordExtractor {
+  constructor();
+  extractKeywords(text: string, topN?: number): string[];
+}
+```
+
+**Example:**
+```typescript
+import { KeywordExtractor } from "textanalysis-tool";
+
+const extractor = new KeywordExtractor();
+const keywords = extractor.extractKeywords(
+  "Machine learning algorithms process data efficiently",
+  5
+);
+console.log(keywords); // ["machine", "learning", "algorithms", "process", "data"]
+```
+
+---
+
+#### `TextDiff`
+
+Compare two texts and identify differences.
+```typescript
+class TextDiff {
+  compare(text1: string, text2: string): TextDiffResult;
+}
+```
+
+**Example:**
+```typescript
+import { TextDiff } from "textanalysis-tool";
+
+const diff = new TextDiff();
+const result = diff.compare("I love cats", "I love dogs");
+console.log(result.similarity);              // 75.0
+console.log(result.wordDifference.added);    // ["dogs"]
+console.log(result.wordDifference.removed);  // ["cats"]
+```
+
+---
+
+#### `LexiconLoader`
+
+Service for loading linguistic resources (stopwords and IDF maps).
+```typescript
+class LexiconLoader {
+  static async loadStopWords(): Promise<Set<string>>;
+  static async loadStandardIDF(): Promise<Map<string, number>>;
+}
+```
+
+**Example:**
+```typescript
+import { LexiconLoader } from "textanalysis-tool";
+
+// Load resources manually if needed
+const stopWords = await LexiconLoader.loadStopWords();
+const idfMap = await LexiconLoader.loadStandardIDF();
+```
+
+---
+
+### 🎯 Operations Enum
+
+All built-in operations available in the library.
+```typescript
+enum Operations {
+  // Text Removal
+  RemovePunctuations = "removepunc",
+  RemoveNumbers = "removenum",
+  RemoveAlphabets = "removealpha",
+  RemoveSpecialChars = "removespecialchar",
+  RemoveNewlines = "newlineremover",
+  RemoveExtraSpaces = "extraspaceremover",
+  
+  // Text Extraction
+  ExtractUrls = "extractUrls",
+  ExtractEmails = "extractEmails",
+  ExtractPhoneNumbers = "extractPhoneNumbers",
+  ExtractHashtags = "extractHashtags",
+  ExtractMentions = "extractMentions",
+  ExtractKeywords = "extractKeywords",
+  
+  // Text Transformation
+  ConvertToUppercase = "fullcaps",
+  ConvertToLowercase = "lowercaps",
+  ConvertToTitleCase = "titlecase",
+  ReverseText = "reversetext",
+  Truncate = "truncate",
+  
+  // Text Counting
+  CountCharacters = "charcount",
+  CountAlphabets = "alphacount",
+  CountNumbers = "numcount",
+  CountAlphanumeric = "alphanumericcount",
+  CountWords = "wordcount",
+  CountSentences = "sentencecount",
+  
+  // Advanced Analysis
+  AnalyzeSentiment = "analyzeSentiment",
+  CalculateReadability = "calculateReadability",
+  DetectLanguage = "detectLanguage",
+  CompareTexts = "compareTexts"
+}
+```
+
+---
+
+### ⚙️ Type Definitions
+
+#### `AnalyserBuiltInOptions`
+
+Configuration object for enabling operations.
+```typescript
+type AnalyserBuiltInOptions = Partial<Record<Operations | string, boolean | any>>;
+```
+
+**Example:**
+```typescript
+const options: AnalyserBuiltInOptions = {
+  [Operations.CountWords]: true,
+  [Operations.RemovePunctuations]: true,
+  [Operations.ExtractKeywords]: { topN: 10 },
+  [Operations.Truncate]: { maxLength: 100, suffix: "..." }
+};
+```
+
+---
+
+#### `TruncateConfig`
+
+Configuration for the Truncate operation.
+```typescript
+interface TruncateConfig {
+  maxLength: number;
+  suffix?: string;  // Default: "..."
+}
+```
+
+**Example:**
+```typescript
+const truncateConfig: TruncateConfig = {
+  maxLength: 50,
+  suffix: "... [read more]"
+};
+```
+
+---
+
+### 🌟 Usage Patterns
+
+#### Pattern 1: Quick Analysis
+```typescript
+const analyser = await Analyser.create("Sample text", {
+  [Operations.CountWords]: true
+});
+const result = await analyser.main();
+console.log(result.metadata.counts.wordCount);
+```
+
+#### Pattern 2: Pipeline Processing
+```typescript
+const analyser = await Analyser.create("  MESSY TEXT!!! 123  ");
+
+// Step 1: Clean
+analyser.options = {
+  [Operations.RemovePunctuations]: true,
+  [Operations.RemoveExtraSpaces]: true
+};
+await analyser.main();
+
+// Step 2: Transform
+analyser.options = {
+  [Operations.ConvertToLowercase]: true
+};
+const result = await analyser.main();
+```
+
+#### Pattern 3: Advanced Multi-Analysis
+```typescript
+const analyser = await Analyser.create(longText, {
+  [Operations.AnalyzeSentiment]: true,
+  [Operations.CalculateReadability]: true,
+  [Operations.DetectLanguage]: true,
+  [Operations.ExtractKeywords]: { topN: 10 }
+});
+
+const result = await analyser.main();
+const report = {
+  sentiment: result.metadata.sentiment?.classification,
+  readability: result.metadata.readability?.complexity,
+  language: result.metadata.languageDetection?.languageName,
+  keywords: result.metadata.keywords
+};
 ```
 
 ---

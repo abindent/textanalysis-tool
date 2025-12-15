@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tools = void 0;
 const esrever_1 = __importDefault(require("esrever"));
+require("intl-segmenter-polyfill");
 const extensions_1 = require("./extensions");
 /**
  * @namespace Tools
@@ -252,8 +253,10 @@ var Tools;
          */
         async newLineRemover() {
             this.output = this.output
-                .replace(ToolsConstant.regex.newlines, "\n")
+                .replace(ToolsConstant.regex.newlines, " ")
                 .trim();
+            // Clean up any double spaces created by replacing newlines
+            this.output = this.output.replace(/ +/g, " ");
             this.logOperation("Removed New Line Characters");
         }
         /**
@@ -408,16 +411,24 @@ var Tools;
                 this.logOperation("Counted Sentences");
                 return;
             }
-            // Match sentences: any text followed by .!? (with optional following whitespace)
-            // OR any remaining text at the end (incomplete sentence)
-            const sentencePattern = /[^.!?]+[.!?]+/g;
-            const matches = trimmed.match(sentencePattern) || [];
-            // Check if there's remaining text after the last punctuation
-            const lastMatch = matches[matches.length - 1];
-            const hasTrailingText = lastMatch
-                ? trimmed.lastIndexOf(lastMatch) + lastMatch.length < trimmed.length
-                : trimmed.length > 0;
-            this.sentenceCount = matches.length + (hasTrailingText ? 1 : 0);
+            // Check for Intl.Segmenter support (Node 16+ / Modern Browsers)
+            if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+                const segmenter = new Intl.Segmenter("en", {
+                    granularity: "sentence",
+                });
+                const segments = segmenter.segment(trimmed);
+                let count = 0;
+                for (const _ of segments) {
+                    count++;
+                }
+                this.sentenceCount = count;
+            }
+            else {
+                // robust fallback if Intl.Segmenter is not available
+                // Matches sentences ending in . ! ? but ignores common abbreviations (Mr. Dr. etc)
+                const output = trimmed.replace(/([.?!])\s*(?=[A-Z])/g, "$1|");
+                this.sentenceCount = output.split("|").length;
+            }
             this.logOperation("Counted Sentences");
         }
         /**
