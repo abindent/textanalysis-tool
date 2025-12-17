@@ -1,6 +1,6 @@
 {
   "name": "textanalysis-tool",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A TypeScript module providing text analysis functionalities with various operations.",
   "homepage": "https://textanalyserosc.netlify.app/showcase",
   "bugs": {
