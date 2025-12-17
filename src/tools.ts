@@ -371,9 +371,10 @@ export class Analyser {
    * @async
    * @function newLineRemover
    * @summary Removes newline characters from the input text.
+C  * @description Collapses multiple consecutive blank lines into a single blank line, removes leading/trailing blank lines, while preserving single newlines for readability.
    */
   private async newLineRemover(): Promise<void> {
-    this.output = this.output.replace(ToolsConstant.regex.newlines, " ").trim();
+    this.output = this.output.replace(ToolsConstant.regex.newlines, "\n").trim();
 
     // Clean up any double spaces created by replacing newlines
     this.output = this.output.replace(/ +/g, " ");
