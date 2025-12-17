@@ -39,6 +39,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TextDiff = exports.LanguageDetector = exports.TextStatistics = exports.KeywordExtractor = exports.SentimentAnalyzer = exports.LexiconLoader = void 0;
 const natural_1 = __importDefault(require("natural"));
 const compromise_1 = __importDefault(require("compromise"));
+const franc_1 = require("franc");
+const iso_639_3_1 = require("iso-639-3");
 // Lazy load WinkNLP to avoid initialization errors in Node.js
 let winkNLP = null;
 let winkModel = null;
@@ -473,43 +475,144 @@ class TextStatistics {
 exports.TextStatistics = TextStatistics;
 /**
  * @class LanguageDetector
- * @summary Naive n-gram detector (Placeholder for future dynamic expansion)
+ * @summary Language detection using franc library with ISO 639-3 support
+ * @description Uses franc for accurate language detection across 186 languages.
+ * Returns ISO 639-3 codes with confidence scores and language names.
  */
 class LanguageDetector {
-    constructor() {
-        this.languageProfiles = new Map();
-        this.initializeLanguageProfiles();
+    constructor(minTextLength = 10) {
+        this.minTextLength = 10;
+        this.minTextLength = minTextLength;
     }
-    initializeLanguageProfiles() {
-        const english = new Map([
-            ["the", 1],
-            ["and", 0.95],
-            ["ing", 0.94],
-        ]);
-        const spanish = new Map([
-            ["que", 1],
-            ["ent", 0.96],
-            ["ade", 0.94],
-        ]);
-        const french = new Map([
-            ["les", 1],
-            ["ent", 0.96],
-            ["que", 0.94],
-        ]);
-        this.languageProfiles.set("english", english);
-        this.languageProfiles.set("spanish", spanish);
-        this.languageProfiles.set("french", french);
-    }
-    detect(text) {
-        // Simplified detection logic
+    /**
+     * @function detect
+     * @summary Detects the language of the provided text
+     * @param {string} text - The text to analyze
+     * @param {Object} options - Detection options
+     * @param {string[]} options.whitelist - Languages to consider (ISO 639-3 codes)
+     * @param {string[]} options.blacklist - Languages to ignore (ISO 639-3 codes)
+     * @param {number} options.minLength - Minimum text length for detection
+     * @returns {LanguageDetectionResult} Detection result with language, confidence, and scores
+     */
+    detect(text, options) {
+        if (!text || typeof text !== "string") {
+            throw new Error("Input must be a non-empty string");
+        }
+        const minLength = options?.minLength ?? this.minTextLength;
+        // If text is too short, return uncertain result
+        if (text.length < minLength) {
+            return {
+                detectedLanguage: "und",
+                languageName: "Undetermined",
+                confidence: 0,
+                scores: { und: 0 },
+                alternativeLanguages: [],
+            };
+        }
+        // Prepare franc options
+        const francOptions = {
+            minLength,
+        };
+        if (options?.whitelist && options.whitelist.length > 0) {
+            francOptions.whitelist = options.whitelist;
+        }
+        if (options?.blacklist && options.blacklist.length > 0) {
+            francOptions.blacklist = options.blacklist;
+        }
+        // Get all possible language matches with scores
+        const allResults = (0, franc_1.francAll)(text, francOptions);
+        if (!allResults || allResults.length === 0 || allResults[0][0] === "und") {
+            return {
+                detectedLanguage: "und",
+                languageName: "Undetermined",
+                confidence: 0,
+                scores: { und: 0 },
+                alternativeLanguages: [],
+            };
+        }
+        // Get the top result
+        const [topLangCode, topScore] = allResults[0];
+        // Get language name from ISO 639-3
+        const languageName = this.getLanguageName(topLangCode);
+        // Calculate confidence (franc returns 0-1, we convert to 0-100 percentage)
+        const confidence = Number((topScore * 100).toFixed(2));
+        // Build scores object
+        const scores = {};
+        allResults.slice(0, 5).forEach(([code, score]) => {
+            scores[code] = Number((score * 100).toFixed(2));
+        });
+        // Get alternative languages (top 3 after the primary)
+        const alternativeLanguages = allResults
+            .slice(1, 4)
+            .map(([code, score]) => ({
+            language: code,
+            languageName: this.getLanguageName(code),
+            confidence: Number((score * 100).toFixed(2)),
+        }));
         return {
-            detectedLanguage: "english",
-            confidence: 0.9,
-            scores: { english: 0.9 },
+            detectedLanguage: topLangCode,
+            languageName,
+            confidence,
+            scores,
+            alternativeLanguages,
         };
     }
+    /**
+     * @private
+     * @function getLanguageName
+     * @summary Gets the human-readable language name from ISO 639-3 code
+     * @param {string} code - ISO 639-3 language code
+     * @returns {string} Language name or code if not found
+     */
+    getLanguageName(code) {
+        // Special handling for common codes
+        const commonNames = {
+            und: "Undetermined",
+            eng: "English",
+            spa: "Spanish",
+            fra: "French",
+            deu: "German",
+            ita: "Italian",
+            por: "Portuguese",
+            rus: "Russian",
+            jpn: "Japanese",
+            kor: "Korean",
+            cmn: "Chinese (Mandarin)",
+            arb: "Arabic",
+            hin: "Hindi",
+            ben: "Bengali",
+            nld: "Dutch",
+            pol: "Polish",
+            tur: "Turkish",
+            vie: "Vietnamese",
+            tha: "Thai",
+            swe: "Swedish",
+        };
+        if (commonNames[code]) {
+            return commonNames[code];
+        }
+        // Try to find in ISO 639-3 database
+        try {
+            const language = iso_639_3_1.iso6393.find((lang) => lang.iso6393 === code);
+            if (language && language.name) {
+                return language.name;
+            }
+        }
+        catch (error) {
+            console.warn(`Could not find language name for code: ${code}`);
+        }
+        // Return the code itself if name not found
+        return code.toUpperCase();
+    }
+    /**
+     * @function addCustomLanguage
+     * @summary Placeholder for custom language profiles
+     * @description Franc doesn't support custom language profiles.
+     * This method is provided for API compatibility but logs a warning.
+     */
     addCustomLanguage(lang, profile) {
-        // Custom language profile logic
+        console.warn("Custom language profiles are not supported by franc. " +
+            "Use whitelist/blacklist options in detect() instead.");
     }
 }
 exports.LanguageDetector = LanguageDetector;

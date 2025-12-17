@@ -98,19 +98,54 @@ export interface ReadabilityResult {
 }
 /**
  * @class LanguageDetector
- * @summary Naive n-gram detector (Placeholder for future dynamic expansion)
+ * @summary Language detection using franc library with ISO 639-3 support
+ * @description Uses franc for accurate language detection across 186 languages.
+ * Returns ISO 639-3 codes with confidence scores and language names.
  */
 export declare class LanguageDetector {
-    private languageProfiles;
-    constructor();
-    private initializeLanguageProfiles;
-    detect(text: string): LanguageDetectionResult;
+    private minTextLength;
+    constructor(minTextLength?: number);
+    /**
+     * @function detect
+     * @summary Detects the language of the provided text
+     * @param {string} text - The text to analyze
+     * @param {Object} options - Detection options
+     * @param {string[]} options.whitelist - Languages to consider (ISO 639-3 codes)
+     * @param {string[]} options.blacklist - Languages to ignore (ISO 639-3 codes)
+     * @param {number} options.minLength - Minimum text length for detection
+     * @returns {LanguageDetectionResult} Detection result with language, confidence, and scores
+     */
+    detect(text: string, options?: {
+        whitelist?: string[];
+        blacklist?: string[];
+        minLength?: number;
+    }): LanguageDetectionResult;
+    /**
+     * @private
+     * @function getLanguageName
+     * @summary Gets the human-readable language name from ISO 639-3 code
+     * @param {string} code - ISO 639-3 language code
+     * @returns {string} Language name or code if not found
+     */
+    private getLanguageName;
+    /**
+     * @function addCustomLanguage
+     * @summary Placeholder for custom language profiles
+     * @description Franc doesn't support custom language profiles.
+     * This method is provided for API compatibility but logs a warning.
+     */
     addCustomLanguage(lang: string, profile: Record<string, number>): void;
 }
 export interface LanguageDetectionResult {
     detectedLanguage: string;
+    languageName: string;
     confidence: number;
     scores: Record<string, number>;
+    alternativeLanguages: Array<{
+        language: string;
+        languageName: string;
+        confidence: number;
+    }>;
 }
 /**
  * @class TextDiff
